@@ -15,9 +15,14 @@ public class MyBot : IChessBot {
     {PieceType.Queen, 950}
   };
 
+  private static float GetDistanceBetweenSquares(Square a, Square b) {
+    return (float)Math.Sqrt(Math.Pow(b.File - a.File, 2) + Math.Pow(b.Rank - a.Rank, 2));
+  }
+
   private static float GetSideScore(Board board, bool white) {
     int pieceScore = 0;
-    List<int> distances = new List<int>();
+    List<float> distances = new List<float>();
+    Square opponentKing = board.GetPieceList(PieceType.King, !white)[0].Square;
 
     foreach (PieceType type in pieceValues.Keys) {
       PieceList list = board.GetPieceList(type, white);
@@ -26,11 +31,17 @@ public class MyBot : IChessBot {
 
       for (int i = 0; i < list.Count; i += 1) {
         Piece piece = list[i];
-        distances.Add(white ? piece.Square.Rank : 7 - piece.Square.Rank);
+        int distanceToFront = white ? piece.Square.Rank : 7 - piece.Square.Rank;
+        float distanceToKing = GetDistanceBetweenSquares(piece.Square, opponentKing);
+        float maxDistanceToKing = 9.899f;
+
+        int distancesToFrontScore = distanceToFront / 7;
+        float distanceToKingScore =  1 - (distanceToKing / maxDistanceToKing);
+        distances.Add(distancesToFrontScore + distanceToKingScore);
       }
     }
 
-    float positionScore = distances.Count == 0 ? 0 : (float)(distances.Average() / 7) * 50;
+    float positionScore = distances.Count == 0 ? 0 : distances.Average() * 50;
     return pieceScore + positionScore;
   }
 
