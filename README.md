@@ -8,7 +8,8 @@ I also plan to make a small game that features these most interesting/challengin
 ## Change Log
 I unfortunately missed a serious bug in the board.GetPiece() and PieceList functions and have had to update the project. Please keep an eye on the change log here in case I've made any other horrifying mistakes. Apologies for the inconvenience. The version you are currently using will be printed to the console when running the program (unless you are using v1.0, in which case nothing will be printed).
 * V1.1 Bug fix for board.GetPiece() and PieceList functions. Added Board.CreateBoardFromFEN() function.
-  * V1.11 (cosmetic changes only) Added coordinate names to board UI. Fixed human player input bug.
+  * V1.11 UI changes: Added coordinate names to board UI and fixed human player input bug.
+  * V1.12 Small fixes to board.IsDraw(): Fifty move counter is now updated properly during search, and insufficient material is now detected for lone bishops on the same square colour.
 
 ## Submission Due Date
 October 1st 2023.<br>
@@ -50,7 +51,8 @@ You can submit your entry [here](https://forms.gle/6jjj8jxNQ5Ln53ie6).
    * Very clever ideas though, thank you to [#12](https://github.com/SebLague/Chess-Challenge/issues/12) and [#24](https://github.com/SebLague/Chess-Challenge/issues/24).
 * If your bot makes an illegal move or runs out of time, it will lose the game.
    * Games are played with 1 minute per side by default (this can be changed in the settings class). The final tournament time control is TBD, so your bot should not assume a particular time control, and instead respect the amount of time left on the timer (given in the Think function).
-* Your bot may not allocate more than 256mb of memory.
+* Your bot may not use more than 256mb of memory for creating look-up tables (such as a transposition table).
+* If you have added a constructor to MyBot (for generating look up tables, etc.) it may not take longer than 5 seconds to complete.
 * All of your code/data must be contained within the _MyBot.cs_ file.
    * Note: you may create additional scripts for testing/training your bot, but only the _MyBot.cs_ file will be submitted, so it must be able to run without them.
    * You may not rename the _MyBot_ struct or _Think_ function contained in the _MyBot.cs_ file.
